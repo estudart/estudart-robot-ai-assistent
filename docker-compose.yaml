@@ -1,0 +1,7 @@
+services:
+  robot-ai-assistent:
+    build:
+      context: .
+      dockerfile: src/Dockerfile
+    environment:
+      - LOG_LEVEL=INFO
