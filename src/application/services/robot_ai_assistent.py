@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from src.application.services.logging_service import LoggingService
-from src.infrastructure.llm_service import LLMService
-from src.infrastructure.speech_to_text_service import SpeechToTextService
-from src.infrastructure.text_to_speech_service import TextToSpeechService
+from src.application.services.speech_to_text_service import SpeechToTextService
+from src.application.services.text_to_speech_service import TextToSpeechService
+from src.infrastructure.llm_adapter import LLMService
 
 
 class RobotAIAssistent:

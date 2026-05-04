@@ -5,9 +5,10 @@ from typing import Optional
 
 from src.application.services.logging_service import LoggingService
 from src.application.services.robot_ai_assistent import RobotAIAssistent
-from src.infrastructure.llm_service import LLMService
-from src.infrastructure.speech_to_text_service import SpeechToTextService
-from src.infrastructure.text_to_speech_service import TextToSpeechService
+from src.application.services.speech_to_text_service import SpeechToTextService
+from src.application.services.text_to_speech_service import TextToSpeechService
+from src.infrastructure.llm_adapter import LLMService
+from src.infrastructure.speech_adapter import SpeechAdapter
 
 
 _logging: Optional[LoggingService] = None
@@ -15,6 +16,7 @@ _stt: Optional[SpeechToTextService] = None
 _tts: Optional[TextToSpeechService] = None
 _llm: Optional[LLMService] = None
 _assistant: Optional[RobotAIAssistent] = None
+_speech_adapter: Optional[SpeechAdapter] = None
 
 
 def get_logging_service(name: str) -> LoggingService:
@@ -35,8 +37,18 @@ def get_speech_to_text_service() -> SpeechToTextService:
 def get_text_to_speech_service() -> TextToSpeechService:
 	global _tts
 	if _tts is None:
-		_tts = TextToSpeechService(logging_service=get_logging_service("TextToSpeech"))
+		_tts = TextToSpeechService(
+			speech_adapter=get_speech_adapter(),
+			logging_service=get_logging_service("TextToSpeech"),
+		)
 	return _tts
+
+
+def get_speech_adapter() -> SpeechAdapter:
+	global _speech_adapter
+	if _speech_adapter is None:
+		_speech_adapter = SpeechAdapter(logging_service=get_logging_service("SpeechAdapter"))
+	return _speech_adapter
 
 
 def get_llm_service() -> LLMService:
