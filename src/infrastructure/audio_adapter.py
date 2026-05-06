@@ -1,11 +1,8 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Optional
+from typing import Optional
 
 import speech_recognition as sr
-
-if TYPE_CHECKING:
-	from src.application.services.logging_service import LoggingService
 
 
 class SpeechRecognitionAdapter:
