@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from src.application.services.logging_service import LoggingService
-from src.application.services.speech_to_text_service import SpeechToTextService
-from src.application.services.text_to_speech_service import TextToSpeechService
+from src.infrastructure.audio_adapter import SpeechRecognitionAdapter
+from src.infrastructure.speech_adapter import SpeechAdapter
 from src.infrastructure.llm_adapter import LLMService
 
 
@@ -16,8 +16,8 @@ class RobotAIAssistent:
 	def __init__(
 		self,
 		*,
-		speech_to_text: SpeechToTextService,
-		text_to_speech: TextToSpeechService,
+		speech_to_text: SpeechRecognitionAdapter,
+		text_to_speech: SpeechAdapter,
 		llm: LLMService,
 		logging_service: LoggingService,
 	) -> None:
@@ -29,4 +29,15 @@ class RobotAIAssistent:
 	def start(self) -> None:
 		self._logging.info("RobotAIAssistent started (boilerplate).")
 		self._logging.info("Services wired: STT, TTS, LLM.")
+
+		while True:
+			audio = self._stt.get_audio()
+
+			if not audio:
+				continue
+
+			user_interaction = self._speech_recognition_adapter.get_text_from_adudio(audio)
+			llm_response = self._llm.get_llm_response(text=user_interaction)
+			self._tts.speak(text=llm_response)
+
 

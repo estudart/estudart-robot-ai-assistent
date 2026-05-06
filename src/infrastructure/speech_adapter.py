@@ -17,10 +17,6 @@ class SpeechAdapter:
 		self._logging = logging_service
 
 	def speak(self, text: str) -> None:
-		if TTS is None:
-			self._logging.info(f"SpeechAdapter.speak() (stub): {text!r}")
-			return
-
 		self._logging.info("SpeechAdapter.speak() (robot_hat).")
 		tts = TTS()
 		tts.say(text)
