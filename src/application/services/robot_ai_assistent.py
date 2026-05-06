@@ -27,23 +27,26 @@ class RobotAIAssistent:
 		self._logging = logging_service
 
 	def start(self) -> None:
-		self._logging.info("RobotAIAssistent started (boilerplate).")
-		self._logging.info("Services wired: STT, TTS, LLM.")
+		try:
+			self._logging.info("RobotAIAssistent started (boilerplate).")
+			self._logging.info("Services wired: STT, TTS, LLM.")
 
-		self._speech_adapter.speak("Starting AI Assistent")
+			self._speech_adapter.speak("Starting AI Assistent")
 
-		while True:
-			audio = self._audio_adapter.get_audio()
+			while True:
+				audio = self._audio_adapter.get_audio()
 
-			if not audio:
-				continue
+				if not audio:
+					continue
 
-			user_interaction = self._audio_adapter.get_text_from_audio(audio)
-			if not str(user_interaction).strip():
-				self._logging.info("No audio was detected")
-				continue
+				user_interaction = self._audio_adapter.get_text_from_audio(audio)
+				if not str(user_interaction).strip():
+					self._logging.info("No audio was detected")
+					continue
 
-			llm_response = self._llm.get_llm_response(text=user_interaction)
-			self._logging.info("Speaking LLM response.")
-			self._speech_adapter.speak(text=llm_response)
-			self._logging.info("Finished speaking.")
+				llm_response = self._llm.get_llm_response(text=user_interaction)
+				self._logging.info("Speaking LLM response.")
+				self._speech_adapter.speak(text=llm_response)
+				self._logging.info("Finished speaking.")
+		except KeyboardInterrupt:
+			exit()
