@@ -13,7 +13,11 @@ class LLMService:
 	def __init__(self, *, logging_service: LoggingService) -> None:
 		self._logging = logging_service
 
+		self._prompt = """
+
+		"""
+
 	def get_llm_response(self, text: str) -> str:
-		self._logging.info(f"LLMService.complete() called (stub), prompt_len={len(prompt)}")
-		return ""
+		self._logging.info(f"LLMService.complete() called (stub), prompt_len={len(self._prompt)}")
+		return text
 

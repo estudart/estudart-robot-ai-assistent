@@ -16,13 +16,13 @@ class RobotAIAssistent:
 	def __init__(
 		self,
 		*,
-		speech_to_text: SpeechRecognitionAdapter,
-		text_to_speech: SpeechAdapter,
+		audio_adapter: SpeechRecognitionAdapter,
+		speech_adapter: SpeechAdapter,
 		llm: LLMService,
 		logging_service: LoggingService,
 	) -> None:
-		self._stt = speech_to_text
-		self._tts = text_to_speech
+		self._audio_adapter = audio_adapter
+		self._speech_adapter = speech_adapter
 		self._llm = llm
 		self._logging = logging_service
 
@@ -30,14 +30,19 @@ class RobotAIAssistent:
 		self._logging.info("RobotAIAssistent started (boilerplate).")
 		self._logging.info("Services wired: STT, TTS, LLM.")
 
+		self._speech_adapter.speak("Starting AI Assistent")
+
 		while True:
-			audio = self._stt.get_audio()
+			audio = self._audio_adapter.get_audio()
 
 			if not audio:
 				continue
 
-			user_interaction = self._speech_recognition_adapter.get_text_from_adudio(audio)
+			user_interaction = self._audio_adapter.get_text_from_audio(audio)
+			if not str(user_interaction).strip():
+				continue
+
 			llm_response = self._llm.get_llm_response(text=user_interaction)
-			self._tts.speak(text=llm_response)
-
-
+			self._logging.info("Speaking LLM response.")
+			self._speech_adapter.speak(text=llm_response)
+			self._logging.info("Finished speaking.")
