@@ -14,7 +14,7 @@ class SpeechRecognitionAdapter:
 	def __init__(
 		self,
 		*,
-		language: str = "pt-BR",
+		language: str = "en-US",
 		logging_service: Optional["LoggingService"] = None,
 	) -> None:
 		self._logging = logging_service
@@ -48,7 +48,7 @@ class SpeechRecognitionAdapter:
 				return self.recognizer.listen(
 					source,
 					timeout=5,
-					phrase_time_limit=10,
+					phrase_time_limit=None,
 				)
 		except sr.WaitTimeoutError:
 			return None

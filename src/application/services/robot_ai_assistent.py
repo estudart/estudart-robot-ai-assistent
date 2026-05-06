@@ -40,6 +40,7 @@ class RobotAIAssistent:
 
 			user_interaction = self._audio_adapter.get_text_from_audio(audio)
 			if not str(user_interaction).strip():
+				self._logging.info("No audio was detected")
 				continue
 
 			llm_response = self._llm.get_llm_response(text=user_interaction)
